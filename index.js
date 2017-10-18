@@ -1,7 +1,5 @@
 var express = require('express');
 var app = express();
-var port = 3000;
-var express    = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -16,9 +14,12 @@ app.use(express.urlencoded({
     extended: true
   })); 
 
+app.set('port', (process.env.PORT || 5000))
+app.use(express.static(__dirname + '/public'))
 
-app.listen(port, function(){
-    console.log("Listening on port " + port);
+
+app.listen(app.get('port'), function() {
+  console.log("Listening on port " + app.get('port'))
 });
 
 var routes = require('./routes');
