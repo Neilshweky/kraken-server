@@ -4,6 +4,9 @@ module.exports = function (app){
      var refresh_controller = require('./refresh-controller');
      var controller = require('./controller');
      
+     app.route('/')
+        .get(function(req, res) { res.send ("You've made it!")});
+
     app.route('/update/guildies')
         .get(refresh_controller.update_guildies);
 
