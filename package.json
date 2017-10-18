@@ -1,0 +1,21 @@
+{
+  "name": "kraken-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "connect": "^3.6.5",
+    "express": "^4.16.1",
+    "firebase-admin": "^5.4.1",
+    "moment": "^2.18.1",
+    "request": "^2.83.0",
+    "roman-numerals": "^0.3.2"
+  }
+}
