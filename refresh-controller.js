@@ -49,7 +49,7 @@ exports.update_guildie_chars = function (req, res) {
         var newDoc = db.collection("guilds").doc("the-kraken-force").collection("all_characters").doc(key).collection("characters").doc(charName).set(guildieCharsDic[key][charName]).then( result => {
           i++;
           console.log("Result " + i + " , " + Object.keys(guildieCharsDic[key]).length);
-          if (i >= Object.keys(guildieCharsDic[key]).length*10 && j >= Object.keys(guildieCharsDic).length){
+          if (i >= Object.keys(guildieCharsDic[key]).length*Object.keys(guildieCharsDic).length && j >= Object.keys(guildieCharsDic).length){
             console.log("Done!");
             res.send("Done Updating Guildie Chars!");
           }
@@ -113,11 +113,12 @@ var getGuildieChars = function(index, callback){
     console.log (index);
     var gMatesDic = {}
     var array_to_use = [];
-    
-    for(var i = index * 10; i < (index + 1) * 10; i++){
-      array_to_use[i%10] = swgoh_name_array[i];
+    var x = 0;
+    for(x = index * 10; x < Math.min((index + 1) * 10, swgoh_name_array.length-1); x++){
+      array_to_use[x%10] = swgoh_name_array[x];
     }
-    // if (index === -1) gMatesDic = guildMatesDictionary;
+
+
     var p = -1;
     array_to_use.forEach(function(name) {
       request('https://swgoh.gg/u/' + name + '/collection', function(err, response, body){
@@ -179,8 +180,7 @@ var getGuildieChars = function(index, callback){
         
 
         
-        
-        if(p === 9){
+        if(p === (x-1)%10){
           console.log("Done getting guildie char data!");
           callback(guildies);
           return;
