@@ -181,7 +181,7 @@ var getGuildieChars = function(index, callback){
             rarity: charStar,
             percent: percent,
             link: charLink,
-            galactic_power: gp_array[1]
+            galactic_power: parseInt(gp_array[1])
           }
         
         }
