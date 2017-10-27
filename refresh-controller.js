@@ -12,7 +12,8 @@ admin.initializeApp({
   databaseURL: "https://the-kraken-force.firebaseio.com"
 });
 
-var db = admin.firestore();
+var db = admin.database();
+var ref = db.ref();
 
 exports.update_guildies = function (req, res) {
 
@@ -20,11 +21,15 @@ exports.update_guildies = function (req, res) {
     
     var i = 0;
     for(var key in guildMatesDic){
-      var newDoc = db.collection("guilds").doc("the-kraken-force").collection("guildmates").doc(key).set(guildMatesDic[key]).then( result => {
-        i++;
-        if (i >= Object.keys(guildMatesDic).length){
-          console.log("Done!");
-          res.send("Done Updating Guildies!");
+      var newDoc = ref.child("Guilds").child("the-kraken-force").child('guildies').child(key).set(guildMatesDic[key], function (error) {
+        if(!error){
+          i++;
+          if (i >= Object.keys(guildMatesDic).length){
+            console.log("Done!");
+            res.send("Done Updating Guildies!");
+          }
+        }else{
+          console.log(error);
         }
       });
       
@@ -46,7 +51,9 @@ exports.update_guildie_chars = function (req, res) {
       for(var charName in guildieCharsDic[key]){
         console.log(guildieCharsDic[key][charName])
         
-        var newDoc = db.collection("guilds").doc("the-kraken-force").collection("all_characters").doc(key).collection("characters").doc(charName).set(guildieCharsDic[key][charName]).then( result => {
+        var newDoc = ref.child('Guilds').child("the-kraken-force").child('all_characters').child(key).child(charName).set(guildieCharsDic[key][charName], function (error) {
+          if (error) console.log (error);
+
           i++;
           console.log("Result " + i + " , " + Object.keys(guildieCharsDic[key]).length);
           if (i >= Object.keys(guildieCharsDic[key]).length*Object.keys(guildieCharsDic).length && j >= Object.keys(guildieCharsDic).length){
@@ -142,6 +149,9 @@ var getGuildieChars = function(index, callback){
           var charGear = item.find('.char-portrait-full-gear-level').eq(i).text();
           var charLink = item.find('a.char-portrait-full-link').eq(i).attr('href');
           var percent = parseFloat($(item).find('.collection-char-gp-label-value').eq(i).text())/100;
+          var gp = item.find('.collection-char-gp').eq(i).attr('title');
+          var gp_array = gp ? gp.split(' ') : gp_array = [0, 0];
+          console.log('GP: ' + gp_array[1]);
           if(!charLink) charLink = '';
           
           
@@ -170,7 +180,8 @@ var getGuildieChars = function(index, callback){
             gear_tier: charGear,
             rarity: charStar,
             percent: percent,
-            link: charLink
+            link: charLink,
+            galactic_power: gp
           }
         
         }

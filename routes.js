@@ -13,9 +13,15 @@ module.exports = function (app){
     app.route('/update/guildiechars/:index')
         .get(refresh_controller.update_guildie_chars);
 
+    app.route('/tb/setup/hoth_rebel')
+        .post(controller.new_tb_hoth_rebel_phase_data);
+
     app.route('/tb/new/hoth_rebel')
-        .post(controller.new_tb_hoth_rebel);
+        .post(controller.instantiate_hoth_rebel);
 
     app.route('/tb/waves')
         .post(controller.mission_completed);
+        
+    app.route('/tb/currentphase/hoth_rebel')
+        .post(controller.get_current_phase_data);
 }
